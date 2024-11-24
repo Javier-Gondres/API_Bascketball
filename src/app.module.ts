@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { CiudadModule } from './ciudad/ciudad.module';
 import { Ciudad } from './ciudad/ciudad.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EquipoModule } from './equipo/equipo.module';
 
 @Module({
   imports: [
@@ -19,8 +20,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       },
       synchronize: false,
       entities: [Ciudad],
+      autoLoadEntities: true,
     }),
     CiudadModule,
+    EquipoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

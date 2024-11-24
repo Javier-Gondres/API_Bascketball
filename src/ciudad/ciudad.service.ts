@@ -12,12 +12,13 @@ export class CiudadService {
   ) {}
 
   async findAll(): Promise<Ciudad[]> {
-    return this.ciudadRepository.find();
+    return this.ciudadRepository.find({ relations: ['equipos'] });
   }
 
   async findOne(CodCiudad: string): Promise<Ciudad> {
     const ciudad = await this.ciudadRepository.findOne({
       where: { CodCiudad },
+      relations: ['equipos'],
     });
 
     if (!ciudad) {
