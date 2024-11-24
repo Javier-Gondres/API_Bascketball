@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Param, Delete, Put, Body } from '@nestjs/common';
 import { CiudadService } from './ciudad.service';
 import { Ciudad } from './ciudad.entity';
-import { CiudadDto } from './ciudad.dto';
+import { CreateCiudadDto } from './create-ciudad.dto';
+import { UpdateCiudadDto } from './update-ciudad.dto';
 
 @Controller('ciudad')
 export class CiudadController {
@@ -12,23 +13,25 @@ export class CiudadController {
     return this.ciudadService.findAll();
   }
 
-  @Get('/:id')
-  findOne(@Param('id') CodCiudad: string): Promise<Ciudad> {
+  @Get('/:CodCiudad')
+  findOne(@Param('CodCiudad') CodCiudad: string): Promise<Ciudad> {
     return this.ciudadService.findOne(CodCiudad);
   }
 
   @Post()
-  create(@Body() ciudadData: CiudadDto): Promise<Ciudad> {
+  create(@Body() ciudadData: CreateCiudadDto): Promise<Ciudad> {
     return this.ciudadService.create(ciudadData);
   }
 
-  @Put('/:id')
-  update(@Param('id') CodCiudad: string, @Body() ciudadData: CiudadDto): Promise<Ciudad> {
+  @Put('/:CodCiudad')
+  update(@Param('CodCiudad') CodCiudad: string, @Body() ciudadData: UpdateCiudadDto): Promise<Ciudad> {
     return this.ciudadService.update(CodCiudad, ciudadData);
   }
 
-  @Delete('/:id')
-  remove(@Param('id') CodCiudad: string): Promise<void> {
-    return this.ciudadService.remove(CodCiudad);
+  @Delete('/:CodCiudad')
+  async remove(@Param('CodCiudad') CodCiudad: string): Promise<{message: string}> {
+    await this.ciudadService.remove(CodCiudad);
+  
+    return {message: "Se ha eliminado correctamente la ciudad"}
   }
 }
