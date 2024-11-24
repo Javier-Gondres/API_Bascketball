@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EquipoModule } from './equipo/equipo.module';
 import { JugadorModule } from './jugador/jugador.module';
 import { JuegoModule } from './juego/juego.module';
+import { EstadisticaModule } from './estadistica/estadistica.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { JuegoModule } from './juego/juego.module';
     EquipoModule,
     JugadorModule,
     JuegoModule,
+    EstadisticaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

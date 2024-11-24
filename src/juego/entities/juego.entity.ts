@@ -6,7 +6,7 @@ export class Juego {
   @PrimaryColumn({ type: 'varchar', length: 5, nullable: false })
   CodJuego: string;
 
-  @Column({ length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   Descripcion: string;
 
   @Column({ type: 'varchar', length: 5, nullable: false })
