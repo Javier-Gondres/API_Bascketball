@@ -1,6 +1,14 @@
 import { Ciudad } from 'src/ciudad/ciudad.entity';
 import { Equipo } from 'src/equipo/entities/equipo.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { EstadisticaJuego } from 'src/estadistica-juego/entities/estadistica-juego.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
 @Entity('Jugador')
 export class Jugador {
@@ -44,4 +52,13 @@ export class Jugador {
   })
   @JoinColumn({ name: 'CodEquipo' })
   equipo: Equipo | null;
+
+  @OneToMany(
+    () => EstadisticaJuego,
+    (estadisticasDeJuego) => estadisticasDeJuego.CodJugador,
+    {
+      cascade: ['remove'],
+    },
+  )
+  estadisticasDeJuego: EstadisticaJuego[];
 }

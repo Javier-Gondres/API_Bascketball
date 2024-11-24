@@ -1,5 +1,13 @@
 import { Equipo } from 'src/equipo/entities/equipo.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { EstadisticaJuego } from 'src/estadistica-juego/entities/estadistica-juego.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
 @Entity('Juego')
 export class Juego {
@@ -31,4 +39,13 @@ export class Juego {
   })
   @JoinColumn({ name: 'Equipo2' })
   Equipo2Entity: Equipo;
+
+  @OneToMany(
+    () => EstadisticaJuego,
+    (estadisticasDeJuego) => estadisticasDeJuego.CodJugador,
+    {
+      cascade: ['remove'],
+    },
+  )
+  estadisticasDeJuego: EstadisticaJuego[];
 }

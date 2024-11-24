@@ -8,6 +8,7 @@ import { EquipoModule } from './equipo/equipo.module';
 import { JugadorModule } from './jugador/jugador.module';
 import { JuegoModule } from './juego/juego.module';
 import { EstadisticaModule } from './estadistica/estadistica.module';
+import { EstadisticaJuegoModule } from './estadistica-juego/estadistica-juego.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { EstadisticaModule } from './estadistica/estadistica.module';
     JugadorModule,
     JuegoModule,
     EstadisticaModule,
+    EstadisticaJuegoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
