@@ -10,6 +10,7 @@ import { Equipo } from 'src/equipo/entities/equipo.entity';
 import { Repository } from 'typeorm';
 import { Juego } from './entities/juego.entity';
 import { CodeGenerator } from 'src/utils/codeGenerator/codeGenerator.utils';
+import { EstadisticaJuego } from 'src/estadistica-juego/entities/estadistica-juego.entity';
 
 @Injectable()
 export class JuegoService {
@@ -18,6 +19,8 @@ export class JuegoService {
     private equiporRepository: Repository<Equipo>,
     @InjectRepository(Juego)
     private juegoRepository: Repository<Juego>,
+    @InjectRepository(EstadisticaJuego)
+    private estadisticaJuegoRepository: Repository<EstadisticaJuego>,
   ) {}
 
   async findAll(): Promise<Juego[]> {
@@ -120,6 +123,8 @@ export class JuegoService {
   }
 
   async remove(codigo: string): Promise<void> {
+    await this.estadisticaJuegoRepository.delete({ CodJuego: codigo });
+
     const result = await this.juegoRepository.delete(codigo);
     if (result.affected === 0) {
       throw new NotFoundException(`Juego con código ${codigo} no encontrado`);

@@ -5,12 +5,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Estadistica } from './entities/estadistica.entity';
 import { Repository } from 'typeorm';
 import { CodeGenerator } from 'src/utils/codeGenerator/codeGenerator.utils';
+import { EstadisticaJuego } from 'src/estadistica-juego/entities/estadistica-juego.entity';
 
 @Injectable()
 export class EstadisticaService {
   constructor(
     @InjectRepository(Estadistica)
     private estadisticaRepository: Repository<Estadistica>,
+
+    @InjectRepository(EstadisticaJuego)
+    private estadisticaJuegoRepository: Repository<EstadisticaJuego>,
   ) {}
 
   async findAll(): Promise<Estadistica[]> {
@@ -69,6 +73,8 @@ export class EstadisticaService {
   }
 
   async remove(codigo: string): Promise<void> {
+    await this.estadisticaJuegoRepository.delete({ CodEstadistica: codigo });
+
     const result = await this.estadisticaRepository.delete(codigo);
     if (result.affected === 0) {
       throw new NotFoundException(

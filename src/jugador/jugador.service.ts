@@ -7,6 +7,7 @@ import { Ciudad } from 'src/ciudad/ciudad.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Jugador } from './entities/jugador.entity';
 import { CodeGenerator } from 'src/utils/codeGenerator/codeGenerator.utils';
+import { EstadisticaJuego } from 'src/estadistica-juego/entities/estadistica-juego.entity';
 
 @Injectable()
 export class JugadorService {
@@ -17,6 +18,8 @@ export class JugadorService {
     private equiporRepository: Repository<Equipo>,
     @InjectRepository(Jugador)
     private jugadorRepository: Repository<Jugador>,
+    @InjectRepository(EstadisticaJuego)
+    private estadisticaJuegoRepository: Repository<EstadisticaJuego>,
   ) {}
 
   async findAll(): Promise<Jugador[]> {
@@ -111,6 +114,8 @@ export class JugadorService {
   }
 
   async remove(codigo: string): Promise<void> {
+    await this.estadisticaJuegoRepository.delete({ CodJuego: codigo });
+
     const result = await this.jugadorRepository.delete(codigo);
     if (result.affected === 0) {
       throw new NotFoundException(`Equipo con código ${codigo} no encontrado`);
