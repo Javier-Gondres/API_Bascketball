@@ -6,6 +6,7 @@ import { Ciudad } from 'src/ciudad/ciudad.entity';
 import { Equipo } from './entities/equipo.entity';
 import { Repository } from 'typeorm';
 import { CodeGenerator } from 'src/utils/codeGenerator/codeGenerator.utils';
+import { Juego } from 'src/juego/entities/juego.entity';
 
 @Injectable()
 export class EquipoService {
@@ -14,6 +15,8 @@ export class EquipoService {
     private ciudadRepository: Repository<Ciudad>,
     @InjectRepository(Equipo)
     private equipoRepository: Repository<Equipo>,
+    @InjectRepository(Juego)
+    private juegoRepository: Repository<Juego>,
   ) {}
 
   async findAll(): Promise<Equipo[]> {
@@ -46,7 +49,7 @@ export class EquipoService {
 
     const codigo = await CodeGenerator.generateUniqueCode<Equipo>(
       this.equipoRepository,
-      'CodEquipo'
+      'CodEquipo',
     );
     const newEntity = this.equipoRepository.create({
       ...data,
@@ -86,6 +89,10 @@ export class EquipoService {
     return updatedEquipo;
   }
   async remove(codigo: string): Promise<void> {
+    await this.juegoRepository.delete({ Equipo1: codigo });
+
+    await this.juegoRepository.delete({ Equipo2: codigo });
+
     const result = await this.equipoRepository.delete(codigo);
     if (result.affected === 0) {
       throw new NotFoundException(`Equipo con código ${codigo} no encontrado`);

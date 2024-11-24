@@ -6,6 +6,7 @@ import { Ciudad } from './ciudad/ciudad.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EquipoModule } from './equipo/equipo.module';
 import { JugadorModule } from './jugador/jugador.module';
+import { JuegoModule } from './juego/juego.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JugadorModule } from './jugador/jugador.module';
     CiudadModule,
     EquipoModule,
     JugadorModule,
+    JuegoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

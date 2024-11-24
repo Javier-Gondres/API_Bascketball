@@ -1,4 +1,5 @@
 import { Ciudad } from 'src/ciudad/ciudad.entity';
+import { Juego } from 'src/juego/entities/juego.entity';
 import { Jugador } from 'src/jugador/entities/jugador.entity';
 import {
   Column,
@@ -22,7 +23,7 @@ export class Equipo {
 
   @ManyToOne(() => Ciudad, (ciudad) => ciudad.equipos, {
     nullable: true,
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'CodCiudad' })
   ciudad: Ciudad | null;
@@ -31,4 +32,14 @@ export class Equipo {
     cascade: ['remove'],
   })
   jugadores: Jugador[];
+
+  @OneToMany(() => Juego, (juego) => juego.Equipo1, {
+    cascade: ['remove'],
+  })
+  juegosEquipo1: Juego[];
+
+  @OneToMany(() => Juego, (juego) => juego.Equipo2, {
+    cascade: ['remove'],
+  })
+  juegosEquipo2: Juego[];
 }
