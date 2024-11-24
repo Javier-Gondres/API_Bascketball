@@ -28,7 +28,11 @@ export class CiudadController {
 
   @Post()
   create(@Body() ciudadData: CreateCiudadDto): Promise<Ciudad> {
-    return this.ciudadService.create({ ...ciudadData, equipos: [] });
+    return this.ciudadService.create({
+      ...ciudadData,
+      equipos: [],
+      jugadores: [],
+    });
   }
 
   @Put(':CodCiudad')

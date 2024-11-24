@@ -44,8 +44,9 @@ export class EquipoService {
       );
     }
 
-    const codigo = await CodeGenerator.generateUniqueCode(
+    const codigo = await CodeGenerator.generateUniqueCode<Equipo>(
       this.equipoRepository,
+      'CodEquipo'
     );
     const newEntity = this.equipoRepository.create({
       ...data,

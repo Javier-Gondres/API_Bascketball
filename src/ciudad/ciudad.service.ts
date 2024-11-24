@@ -31,8 +31,9 @@ export class CiudadService {
   }
 
   async create(ciudadData: Omit<Ciudad, 'CodCiudad'>): Promise<Ciudad> {
-    const CodCiudad = await CodeGenerator.generateUniqueCode(
+    const CodCiudad = await CodeGenerator.generateUniqueCode<Ciudad>(
       this.ciudadRepository,
+      'CodCiudad',
     );
     const newCiudad = this.ciudadRepository.create({
       ...ciudadData,

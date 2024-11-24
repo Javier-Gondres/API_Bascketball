@@ -1,5 +1,13 @@
 import { Ciudad } from 'src/ciudad/ciudad.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Jugador } from 'src/jugador/entities/jugador.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
 @Entity('Equipo')
 export class Equipo {
@@ -9,13 +17,18 @@ export class Equipo {
   @Column({ length: 50, nullable: false })
   Nombre: string;
 
-  @Column({ type: 'varchar', length: 5 })
+  @Column({ type: 'varchar', length: 5, nullable: false })
   CodCiudad: string;
 
   @ManyToOne(() => Ciudad, (ciudad) => ciudad.equipos, {
-    nullable: false,
+    nullable: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'CodCiudad' })
-  ciudad: Ciudad;
+  ciudad: Ciudad | null;
+
+  @OneToMany(() => Jugador, (jugador) => jugador.equipo, {
+    cascade: ['remove'],
+  })
+  jugadores: Jugador[];
 }
