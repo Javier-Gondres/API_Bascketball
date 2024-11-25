@@ -6,6 +6,12 @@ import { BadRequestException, ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: '*', // Permite todas las solicitudes (en desarrollo)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -15,7 +21,7 @@ async function bootstrap() {
           const constraints = err.constraints
             ? Object.values(err.constraints).join(', ')
             : 'No se proporcionaron detalles de las restricciones.';
-          
+
           return `${err.property}: ${constraints}`;
         });
         return new BadRequestException(messages);

@@ -15,16 +15,16 @@ export class Jugador {
   @PrimaryColumn({ type: 'varchar', length: 5, nullable: false })
   CodJugador: string;
 
-  @Column({ length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   Nombre1: string;
 
-  @Column({ length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   Nombre2: string | null;
 
-  @Column({ length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   Apellido1: string;
 
-  @Column({ length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   Apellido2: string | null;
 
   @Column({ type: 'varchar', length: 5, nullable: true })

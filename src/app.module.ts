@@ -15,7 +15,7 @@ import { EstadisticaJuegoModule } from './estadistica-juego/estadistica-juego.mo
     TypeOrmModule.forRoot({
       type: 'mssql',
       host: 'localhost',
-      port: 1433,
+      // port: 1433,
       username: 'JavierAdmin',
       password: 'javier22',
       database: 'BasketballJEGD0001',
