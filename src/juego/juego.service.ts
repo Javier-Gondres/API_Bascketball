@@ -24,12 +24,15 @@ export class JuegoService {
   ) {}
 
   async findAll(): Promise<Juego[]> {
-    return this.juegoRepository.find();
+    return this.juegoRepository.find({
+      relations: ['Equipo1Entity', 'Equipo2Entity'],
+    });
   }
 
   async findOne(codigo: string): Promise<Juego> {
     const entidad = await this.juegoRepository.findOne({
       where: { CodJuego: codigo },
+      relations: ['Equipo1Entity', 'Equipo2Entity'],
     });
 
     if (!entidad) {
@@ -72,6 +75,8 @@ export class JuegoService {
     const newEntity = this.juegoRepository.create({
       ...data,
       CodJuego: codigo,
+      Equipo1Entity: equipo1,
+      Equipo2Entity: equipo2,
     });
 
     return this.juegoRepository.save(newEntity);
@@ -117,9 +122,7 @@ export class JuegoService {
 
     Object.assign(Juego, data);
 
-    const updatedEquipo = await this.juegoRepository.save(Juego);
-
-    return updatedEquipo;
+    return this.juegoRepository.save(Juego);
   }
 
   async remove(codigo: string): Promise<void> {

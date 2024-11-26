@@ -38,13 +38,15 @@ export class EquipoService {
   }
 
   async create(data: Omit<CreateEquipoDto, 'CodEquipo'>): Promise<Equipo> {
-    const ciudad = await this.ciudadRepository.findOne({
-      where: { CodCiudad: data.CodCiudad },
-    });
-    if (!ciudad) {
-      throw new NotFoundException(
-        `Ciudad con código ${data.CodCiudad} no encontrada`,
-      );
+    if (data.CodCiudad) {
+      const ciudad = await this.ciudadRepository.findOne({
+        where: { CodCiudad: data.CodCiudad },
+      });
+      if (!ciudad) {
+        throw new NotFoundException(
+          `Ciudad con código ${data.CodCiudad} no encontrada`,
+        );
+      }
     }
 
     const codigo = await CodeGenerator.generateUniqueCode<Equipo>(

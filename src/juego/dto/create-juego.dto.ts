@@ -1,5 +1,5 @@
 import { IsDate, IsNotEmpty, IsString, Length } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 
 export class CreateJuegoDto {
   @IsNotEmpty({ message: 'La descripcion de la ciudad no puede estar vacío' })
@@ -18,6 +18,11 @@ export class CreateJuegoDto {
   Equipo2: string;
 
   @IsDate({ message: 'La fecha debe ser una fecha valida' })
-  @Type(() => Date)
+  @Transform(
+    ({ value }) => {
+      return new Date(value);
+    },
+    { toClassOnly: false },
+  )
   Fecha: Date;
 }
