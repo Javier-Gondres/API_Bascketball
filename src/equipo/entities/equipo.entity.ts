@@ -18,8 +18,8 @@ export class Equipo {
   @Column({ length: 50, nullable: false })
   Nombre: string;
 
-  @Column({ type: 'varchar', length: 5, nullable: false })
-  CodCiudad: string;
+  @Column({ type: 'varchar', length: 5, nullable: true })
+  CodCiudad: string | null;
 
   @ManyToOne(() => Ciudad, (ciudad) => ciudad.equipos, {
     nullable: true,
