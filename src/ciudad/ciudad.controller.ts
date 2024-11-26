@@ -4,8 +4,8 @@ import {
   Post,
   Param,
   Delete,
-  Put,
   Body,
+  Patch,
 } from '@nestjs/common';
 import { CiudadService } from './ciudad.service';
 import { Ciudad } from './ciudad.entity';
@@ -35,7 +35,7 @@ export class CiudadController {
     });
   }
 
-  @Put(':CodCiudad')
+  @Patch(':CodCiudad')
   update(
     @Param('CodCiudad') CodCiudad: string,
     @Body() ciudadData: UpdateCiudadDto,
