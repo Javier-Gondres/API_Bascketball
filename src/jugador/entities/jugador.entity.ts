@@ -28,7 +28,7 @@ export class Jugador {
   Apellido2: string | null;
 
   @Column({ type: 'varchar', length: 5, nullable: true })
-  CiudadNacim: string;
+  CiudadNacim: string | null;
 
   @Column({ type: 'date', nullable: false })
   FechaNacim: Date;

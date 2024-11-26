@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { JugadorService } from './jugador.service';
 import { CreateJugadorDto } from './dto/create-jugador.dto';
 import { UpdateJugadorDto } from './dto/update-jugador.dto';
+import { SearchJugadorDto } from './dto/searchJugador.dto';
 
 @Controller('jugador')
 export class JugadorController {
@@ -23,6 +25,11 @@ export class JugadorController {
   @Get()
   findAll() {
     return this.jugadorService.findAll();
+  }
+
+  @Get('buscar')
+  buscarJugadores(@Query() searchParams: SearchJugadorDto) {
+    return this.jugadorService.buscarJugadores(searchParams);
   }
 
   @Get(':codigo')
