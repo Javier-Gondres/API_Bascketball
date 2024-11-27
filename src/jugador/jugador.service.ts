@@ -135,19 +135,19 @@ export class JugadorService {
     const {
       Apellido1,
       Apellido2,
-      CiudadNacim,
-      CodEquipo,
       FechaNacim,
       Nombre1,
       Nombre2,
       Numero,
+      ciudadesId,
+      equiposId,
     } = searchParams;
 
     if (
       !Apellido1 &&
       !Apellido2 &&
-      !CiudadNacim &&
-      !CodEquipo &&
+      !ciudadesId &&
+      !equiposId &&
       !FechaNacim &&
       !Nombre1 &&
       !Nombre2 &&
@@ -162,52 +162,33 @@ export class JugadorService {
       qb = qb.leftJoinAndSelect('jugador.equipo', 'equipo');
       qb = qb.leftJoinAndSelect('jugador.ciudad', 'ciudad');
 
-      let firstCondition = true;
-
       if (Apellido1) {
         qb = qb.where('jugador.Apellido1 = :Apellido1', { Apellido1 });
-        firstCondition = false;
       }
       if (Apellido2) {
-        qb = firstCondition
-          ? qb.where('jugador.Apellido2 = :Apellido2', { Apellido2 })
-          : qb.andWhere('jugador.Apellido2 = :Apellido2', { Apellido2 });
-        firstCondition = false;
+        qb = qb.andWhere('jugador.Apellido2 = :Apellido2', { Apellido2 });
       }
-      if (CiudadNacim) {
-        qb = firstCondition
-          ? qb.where('jugador.CiudadNacim = :CiudadNacim', { CiudadNacim })
-          : qb.andWhere('jugador.CiudadNacim = :CiudadNacim', { CiudadNacim });
-        firstCondition = false;
+      if (ciudadesId) {
+        qb = qb.andWhere('jugador.CiudadNacim IN (:...ciudadesId)', {
+          ciudadesId,
+        });
       }
       if (Nombre1) {
-        qb = firstCondition
-          ? qb.where('jugador.Nombre1 = :Nombre1', { Nombre1 })
-          : qb.andWhere('jugador.Nombre1 = :Nombre1', { Nombre1 });
-        firstCondition = false;
+        qb = qb.andWhere('jugador.Nombre1 = :Nombre1', { Nombre1 });
       }
       if (Nombre2) {
-        qb = firstCondition
-          ? qb.where('jugador.Nombre2 = :Nombre2', { Nombre2 })
-          : qb.andWhere('jugador.Nombre2 = :Nombre2', { Nombre2 });
-        firstCondition = false;
+        qb = qb.andWhere('jugador.Nombre2 = :Nombre2', { Nombre2 });
       }
-      if (CodEquipo) {
-        qb = firstCondition
-          ? qb.where('jugador.CodEquipo = :CodEquipo', { CodEquipo })
-          : qb.andWhere('jugador.CodEquipo = :CodEquipo', { CodEquipo });
-        firstCondition = false;
+      if (equiposId) {
+        qb = qb.andWhere('jugador.CodEquipo IN (:...equiposId)', {
+          equiposId,
+        });
       }
       if (FechaNacim) {
-        qb = firstCondition
-          ? qb.where('jugador.FechaNacim = :FechaNacim', { FechaNacim })
-          : qb.andWhere('jugador.FechaNacim = :FechaNacim', { FechaNacim });
-        firstCondition = false;
+        qb = qb.andWhere('jugador.FechaNacim = :FechaNacim', { FechaNacim });
       }
       if (Numero) {
-        qb = firstCondition
-          ? qb.where('jugador.Numero = :Numero', { Numero })
-          : qb.andWhere('jugador.Numero = :Numero', { Numero });
+        qb = qb.andWhere('jugador.Numero = :Numero', { Numero });
       }
 
       return qb;

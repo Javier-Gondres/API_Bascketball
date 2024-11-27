@@ -26,7 +26,9 @@ export class EstadisticaJuegoService {
   ) {}
 
   async findAll(): Promise<EstadisticaJuego[]> {
-    return this.estadisticaJuegoRepository.find();
+    return this.estadisticaJuegoRepository.find({
+      relations: ['juego', 'estadistica', 'jugador'],
+    });
   }
 
   async findOne(
@@ -97,6 +99,9 @@ export class EstadisticaJuegoService {
       CodEstadistica: data.CodEstadistica,
       CodJuego: data.CodJuego,
       CodJugador: data.CodJugador,
+      estadistica,
+      juego,
+      jugador,
     });
 
     return this.estadisticaJuegoRepository.save(newEntity);
@@ -114,6 +119,7 @@ export class EstadisticaJuegoService {
         CodJuego: codigoJuego,
         CodJugador: codigoJugador,
       },
+      relations: ['juego', 'estadistica', 'jugador'],
     });
 
     if (!estadisticaDeJuego) {
