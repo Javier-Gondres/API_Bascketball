@@ -28,12 +28,13 @@ export class JugadorService {
   ) {}
 
   async findAll(): Promise<Jugador[]> {
-    return this.jugadorRepository.find();
+    return this.jugadorRepository.find({ relations: ['equipo'] });
   }
 
   async findOne(codigo: string): Promise<Jugador> {
     const entidad = await this.jugadorRepository.findOne({
       where: { CodJugador: codigo },
+      relations: ['equipo'],
     });
 
     if (!entidad) {

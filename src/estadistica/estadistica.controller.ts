@@ -44,4 +44,17 @@ export class EstadisticaController {
 
     return { message: 'Se ha eliminado correctamente la estadistica' };
   }
+
+  @Get('jugador/:codigoJugador/juego/:codigoJuego/faltantes')
+  async obtenerEstadisticasFaltantes(
+    @Param('codigoJuego') codigoJuego: string,
+    @Param('codigoJugador') codigoJugador: string,
+  ) {
+    const estadisticas =
+      await this.estadisticaService.obtenerEstadisticasQueNoTengaElJugador(
+        codigoJuego,
+        codigoJugador,
+      );
+    return estadisticas;
+  }
 }

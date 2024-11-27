@@ -82,4 +82,33 @@ export class EstadisticaService {
       );
     }
   }
+
+  async obtenerEstadisticasQueNoTengaElJugador(
+    codigoJuego: string,
+    codigoJugador: string,
+  ): Promise<Estadistica[]> {
+    // Obtener los códigos de estadísticas que el jugador ya tiene en el juego
+    const estadisticasDelJugador = await this.estadisticaJuegoRepository
+      .createQueryBuilder('ej')
+      .select('ej.CodEstadistica')
+      .where('ej.CodJuego = :codigoJuego', { codigoJuego })
+      .andWhere('ej.CodJugador = :codigoJugador', { codigoJugador })
+      .getMany();
+
+    const codigosEstadisticasDelJugador = estadisticasDelJugador.map(
+      (ej) => ej.CodEstadistica,
+    );
+
+    // Obtener las estadísticas que el jugador no tiene
+    const estadisticasQueNoTiene = await this.estadisticaRepository
+      .createQueryBuilder('e')
+      .where('e.CodEstadistica NOT IN (:...codigos)', {
+        codigos: codigosEstadisticasDelJugador.length
+          ? codigosEstadisticasDelJugador
+          : ['-1'], // Si el jugador no tiene estadísticas, ponemos un valor que no existe
+      })
+      .getMany();
+
+    return estadisticasQueNoTiene;
+  }
 }
