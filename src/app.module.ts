@@ -9,6 +9,7 @@ import { JugadorModule } from './jugador/jugador.module';
 import { JuegoModule } from './juego/juego.module';
 import { EstadisticaModule } from './estadistica/estadistica.module';
 import { EstadisticaJuegoModule } from './estadistica-juego/estadistica-juego.module';
+import { DatabaseService } from './database/database.service';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { EstadisticaJuegoModule } from './estadistica-juego/estadistica-juego.mo
     EstadisticaJuegoModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, DatabaseService],
 })
 export class AppModule {}

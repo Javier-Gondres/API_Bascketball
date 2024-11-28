@@ -11,6 +11,13 @@ import { Repository } from 'typeorm';
 import { Juego } from './entities/juego.entity';
 import { CodeGenerator } from 'src/utils/codeGenerator/codeGenerator.utils';
 import { EstadisticaJuego } from 'src/estadistica-juego/entities/estadistica-juego.entity';
+import { DatabaseService } from 'src/database/database.service';
+import * as sql from 'mssql';
+import {
+  EstadisticasDelJuegoResponse,
+  GameInfo,
+  TotalesEquipo,
+} from 'src/game-info/game-info.interface';
 
 @Injectable()
 export class JuegoService {
@@ -21,6 +28,7 @@ export class JuegoService {
     private juegoRepository: Repository<Juego>,
     @InjectRepository(EstadisticaJuego)
     private estadisticaJuegoRepository: Repository<EstadisticaJuego>,
+    private readonly databaseService: DatabaseService,
   ) {}
 
   async findAll(): Promise<Juego[]> {
@@ -131,6 +139,49 @@ export class JuegoService {
     const result = await this.juegoRepository.delete(codigo);
     if (result.affected === 0) {
       throw new NotFoundException(`Juego con código ${codigo} no encontrado`);
+    }
+  }
+
+  async estadisticasDelJuego(
+    codJuego: string,
+  ): Promise<EstadisticasDelJuegoResponse> {
+    try {
+      const pool = await this.databaseService.getConnection();
+
+      const request = pool.request();
+      request.input('CodJuego', sql.NChar(5), codJuego);
+
+      const result = await request.execute('EstadisticasDelJuego');
+
+      const [
+        gameInfoArray,
+        estadisticasEquipoLocal,
+        totalesEquipoLocalArray,
+        estadisticasEquipoVisitante,
+        totalesEquipoVisitanteArray,
+      ] = result.recordsets as any;
+
+      const gameInfo: GameInfo = gameInfoArray[0];
+      const totalesEquipoLocal: TotalesEquipo = totalesEquipoLocalArray[0];
+      const totalesEquipoVisitante: TotalesEquipo =
+        totalesEquipoVisitanteArray[0];
+
+      return {
+        gameInfo,
+        estadisticasEquipoLocal,
+        totalesEquipoLocal,
+        estadisticasEquipoVisitante,
+        totalesEquipoVisitante,
+      };
+    } catch (error) {
+      console.error('Error al ejecutar el stored procedure:', error);
+
+      if (error.number === 50000) {
+        // Error lanzado por RAISERROR con severidad 16
+        throw new NotFoundException(error.message);
+      }
+
+      throw new BadRequestException('Error al obtener estadísticas del juego.');
     }
   }
 }

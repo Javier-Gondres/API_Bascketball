@@ -30,6 +30,11 @@ export class JuegoController {
     return this.juegoService.findOne(codigo);
   }
 
+  @Get('estadisticaDelJuego/:codigo')
+  estadisticasDelJuego(@Param('codigo') codigo: string) {
+    return this.juegoService.estadisticasDelJuego(codigo);
+  }
+
   @Patch(':codigo')
   update(
     @Param('codigo') codigo: string,
